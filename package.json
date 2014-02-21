@@ -1,0 +1,18 @@
+{
+  "name": "wombat",
+  "version": "0.0.0",
+  "description": "Puppet in javascript, because Ruby.  Yes I am that guy.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "puppet",
+    "server",
+    "provisioning",
+    "not",
+    "ruby"
+  ],
+  "author": "Wes Todd",
+  "license": "ISC"
+}
