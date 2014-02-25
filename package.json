@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Puppet in javascript, because Ruby.  Yes I am that guy.",
   "main": "index.js",
+  "bin": {
+    "wombat": "./bin/wombat"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,5 +17,11 @@
     "ruby"
   ],
   "author": "Wes Todd",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.1.0",
+    "winston": "^0.7.2",
+    "looker": "0.1.0",
+    "async": "^0.2.10"
+  }
 }

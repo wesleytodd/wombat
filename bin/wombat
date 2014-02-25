@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+var commander = require('commander'),
+	Wombat = require('..');
+
+// CLI options
+commander
+	.version(Wombat.version)
+	.option('-V, --version', 'output the version number')
+	.option('-v, --verbose', 'Verbose logging')
+	.option('-l, --log-level [level]', 'Set the log level')
+	.option('-s, --silent', 'Silent output')
+	.option('-f, --log-file [path]', 'Sets a log file, disables console logging')
+	.option('-d, --directory', 'Directory to find Wombatfile.js')
+	.usage('COMMAND [options]')
+;
+
+// Verbose overrides logging level
+commander.on('verbose', function() {
+	// Verbose logging overrides normal log level setting
+	commander.logLevel = 'verbose';
+});
+
+// Help command
+commander
+	.command('help')
+	.description('Display this usage information.')
+	.action(commander.help)
+;
+
+commander
+	.command('provision')
+	.description('Provision the server')
+	.action(function() {
+		// Create wombat instance
+		var wombat = new Wombat({
+			cli: true,
+			logLevel: commander.logLevel,
+			silent: commander.silent,
+			logFile: commander.logFile,
+			cwd: commander.directory,
+		});
+	})
+;
+
+// Parse the args
+commander.parse(process.argv);
+
+// Default command is to run the full provisioning
+if (!commander.args.length) {
+	return commander.help();
+}
