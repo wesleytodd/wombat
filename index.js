@@ -5,6 +5,10 @@ var
 	winston = require('winston'),
 	wombatfile = require('./lib/wombatfile'),
 	platformDetect = require('./lib/platform-detect')
+	plugin = require('./lib/plugin.js'),
+	exec = require('./lib/exec.js'),
+	package = require('./lib/package.js'),
+	service = require('./lib/service.js')
 ;
 
 // Wombat constructor
@@ -52,16 +56,16 @@ var Wombat = module.exports = function(options) {
 	this.logger.log('verbose', 'Platform detected: %s', p);
 	
 	// Decorate with plugins
-	require('./lib/plugin.js')(this);
+	plugin(this);
 
 	// Decorate with exec
-	require('./lib/exec.js')(this);
+	exec(this);
 
 	// Decorate with package
-	require('./lib/package.js')(this);
+	package(this);
 
 	// Decorate with service
-	require('./lib/service.js')(this);
+	service(this);
 
 	// Load wombatfile and call the config function
 	wombatfile.load(this.options.cwd, function(err, filepath, configFnc) {
