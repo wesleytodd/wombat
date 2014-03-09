@@ -14,7 +14,10 @@ module.exports = function(wombat) {
 	});
 	
 	// Run it
-	mysql.run(function() {
+	mysql.ensureInstalled(function(err) {
+		if (err) {
+			return console.log('OMG, there was like an error or something!?!?!?');
+		}
 		console.log('All Done!!!!!!!');
 	});
 
