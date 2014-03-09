@@ -11,7 +11,7 @@ commander
 	.option('-l, --log-level [level]', 'Set the log level')
 	.option('-s, --silent', 'Silent output')
 	.option('-f, --log-file [path]', 'Sets a log file, disables console logging')
-	.option('-d, --directory', 'Directory to find Wombatfile.js')
+	.option('-d, --directory [path]', 'Directory to find Wombatfile.js')
 	.usage('COMMAND [options]')
 ;
 

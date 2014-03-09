@@ -15,7 +15,8 @@ Vagrant.configure("2") do |config|
 	  ]
   end
 
-  config.vm.provision :shell, :path => "provision.sh"
+  config.vm.provision :shell, :path => "scripts/debian.sh"
+  config.vm.provision :shell, :path => "scripts/install-node.sh"
 
   # Synced Folder
   config.vm.synced_folder "..", "/usr/local/wombat", :mount_options => ["dmode=775", "fmode=775"]
