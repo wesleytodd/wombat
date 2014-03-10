@@ -15,4 +15,4 @@ else
 fi
 
 # Run wombat
-wombat provision -d "/vagrant"
+wombat provision -d "/vagrant" -v

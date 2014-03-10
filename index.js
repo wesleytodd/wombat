@@ -1,6 +1,5 @@
 // Requirements
 var 
-	os = require('os'),
 	fs = require('fs'),
 	winston = require('winston'),
 	wombatfile = require('./lib/wombatfile'),
