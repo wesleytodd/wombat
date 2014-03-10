@@ -3,6 +3,11 @@
 var commander = require('commander'),
 	Wombat = require('..');
 
+// Warn when nnot running as root
+if (process.getuid && process.getuid() != 0) {
+	console.warn('You are not running as root. It is reccomended that Wombat be run as root.');
+}
+
 // CLI options
 commander
 	.version(Wombat.version)
