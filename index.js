@@ -8,7 +8,8 @@ var
 	exec = require('./lib/exec'),
 	package = require('./lib/package'),
 	service = require('./lib/service'),
-	logger = require('./lib/logger')
+	logger = require('./lib/logger'),
+	template = require('./lib/template')
 ;
 
 // Wombat constructor
@@ -70,6 +71,10 @@ var Wombat = module.exports = function(options) {
 		// Decorate with service
 		service(this);
 
+		// Decorate with template
+		template(this);
+
+		// Load wombatfile and call the config function
 		// Load wombatfile and call the config function
 		wombatfile.load(this.options.cwd, function(err, filepath, configFnc) {
 
