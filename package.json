@@ -1,6 +1,6 @@
 {
   "name": "wombat",
-  "version": "0.0.0-pre",
+  "version": "0.0.0-pre-1",
   "description": "Puppet in javascript, because Ruby.  Yes I am that guy.",
   "main": "index.js",
   "bin": {
