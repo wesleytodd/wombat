@@ -20,6 +20,9 @@ var Wombat = module.exports = function(options) {
 	// Default cwd
 	this.options.cwd = this.options.cwd || process.cwd();
 
+	// Default transport
+	this.options.transport = this.options.transport || 'console';
+
 	// Decorate with logger
 	logger(this);
 
@@ -27,53 +30,71 @@ var Wombat = module.exports = function(options) {
 	this.log('info', 'Initalizing...');
 	this.log('verbose', 'Options: ', this.options);
 
-	// Decorate with the platform driver
-	var p = platformDetect();
+	// Decorate with transport
 	try {
-		this.platform = require('./' + path.join('lib', 'platforms', p + '.js'))(this);
+		require('.' + path.sep + path.join('lib', 'transports', this.options.transport))(this);
 	} catch(e) {
-		// Fail if platform is not supported
-		this.log('error', 'Platform not supported', e, p);
+		// Fail if transport is not supported
+		this.log('error', 'Transport not supported', e, this.options.transport);
 		process.exit(1);
 	}
-	this.log('verbose', 'Platform detected: %s', p);
-	
-	// Decorate with plugins
-	plugin(this);
+	this.log('verbose', 'Transport loaded: %s', this.options.transport);
 
-	// Decorate with exec
-	exec(this);
-
-	// Decorate with package
-	package(this);
-
-	// Decorate with service
-	service(this);
-
-	// Load wombatfile and call the config function
-	wombatfile.load(this.options.cwd, function(err, filepath, configFnc) {
-
-		// Exit on error
+	// Detect platform
+	platformDetect(this, function(err, platform) {
+		// Fail when there was an error detecting the platform
 		if (err) {
-			this.log('error', 'Initalization Error', err);
-			this.log('error', err.stack);
+			this.log('error', 'Platform not detected', err);
 			process.exit(2);
 		}
-
-		// Log loaded file
-		this.log('info', 'Wombatfile: %s', filepath);
-
-		// Call config function
+	
+		// Decorate with the platform driver
 		try {
-			configFnc(this);
-		} catch(err) {
-			this.log('error', 'Config Error', err);
-			this.log('error', err.stack);
+			require('.' + path.sep + path.join('lib', 'platforms', platform + '.js'))(this);
+		} catch(e) {
+			// Fail if platform is not supported
+			this.log('error', 'Platform not supported', e, platform);
 			process.exit(3);
 		}
+		this.log('verbose', 'Platform detected: %s', platform);
 		
-	}.bind(this));
+		// Decorate with plugins
+		plugin(this);
 
+		// Decorate with exec
+		exec(this);
+
+		// Decorate with package
+		package(this);
+
+		// Decorate with service
+		service(this);
+
+		// Load wombatfile and call the config function
+		wombatfile.load(this.options.cwd, function(err, filepath, configFnc) {
+
+			// Exit on error
+			if (err) {
+				this.log('error', 'Initalization Error', err);
+				this.log('error', err.stack);
+				process.exit(4);
+			}
+
+			// Log loaded file
+			this.log('info', 'Wombatfile: %s', filepath);
+
+			// Call config function
+			try {
+				configFnc(this);
+			} catch(err) {
+				this.log('error', 'Config Error', err);
+				this.log('error', err.stack);
+				process.exit(5);
+			}
+			
+		}.bind(this));
+
+	}.bind(this));
 };
 
 // Load the package.json to get version
